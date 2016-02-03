@@ -5,7 +5,7 @@ apply plugin: 'signing'
 
 group = 'com.github.sunsheng.sonatype'
 archivesBaseName =  'sonatype-example'
-version = '1.1.0-SNAPSHOT'
+version = '1.1.0-Release'
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
@@ -32,7 +32,14 @@ uploadArchives {
 	repositories {
 		mavenDeployer {
 			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-			snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
+
+			// repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+			repository(url: "http://107.191.52.86:8081/nexus/content/repositories/releases/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			// snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+			snapshotRepository(url: "http://107.191.52.86:8081/nexus/content/repositories/snapshots/") {
 				authentication(userName: ossrhUsername, password: ossrhPassword)
 			}
 		}
